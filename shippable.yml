@@ -8,6 +8,7 @@ node_js:
 
 # The path for Xunit to output test reports
 env:
+ global:
   - XUNIT_FILE=shippable/testresults/result.xml
   - secure: pabLivs1ycAe0MT7VmEFBifLxmzyGfvdmlOriz9MhRctsMGbHOMP/AaBqTGYwNE78DQERJPSwuIWdw5uBt2NZyvO4XF1bF9l1iiK0aDNLatrc/xHd+TGSgkCLKV8lnwKbpLENGW6gvILujXZll2Tb+kjXSXTkGpgsx09n8DJP2VR4Cr2+XjkCqQf3r4qvYwlGCgTtrYtQQ75ugUBORsK6QVuIPXowxyh3ufkisvGGuU8udL0YQ5aw9U2GQKbqe3g+F8wZ0zy0Djdv+VtgNjbL3lvb8i+e4U3bCge8sXAmg7J5y3vQEguUkOM2sQGB8TmAs9R2wGAV1ks9/RfUMqZhg==
 
