@@ -1,39 +1,59 @@
-language: node_js
 
+ language: node_js
+# Version number
+node_js:
+- 0.12
+# - 0.11
+env:
+global:
+#- FOO=FUBU
+- FO1=BUBU
+- BOO=GUBU
+language: node_js
 
 # Version number
 node_js:
-  - 0.10.25
+  - 0.12
+ # - 0.11
 
-
-# The path for Xunit to output test reports
 env:
- global:
-  - XUNIT_FILE=shippable/testresults/result.xml
-  - secure: pabLivs1ycAe0MT7VmEFBifLxmzyGfvdmlOriz9MhRctsMGbHOMP/AaBqTGYwNE78DQERJPSwuIWdw5uBt2NZyvO4XF1bF9l1iiK0aDNLatrc/xHd+TGSgkCLKV8lnwKbpLENGW6gvILujXZll2Tb+kjXSXTkGpgsx09n8DJP2VR4Cr2+XjkCqQf3r4qvYwlGCgTtrYtQQ75ugUBORsK6QVuIPXowxyh3ufkisvGGuU8udL0YQ5aw9U2GQKbqe3g+F8wZ0zy0Djdv+VtgNjbL3lvb8i+e4U3bCge8sXAmg7J5y3vQEguUkOM2sQGB8TmAs9R2wGAV1ks9/RfUMqZhg==
- matrix:
-  - Foo=bar
-  - secure: rwEd7lrW0z80ENN/8fuywnTz3YOhBH9VVR7ZmAyHzP38KwkS2jBSfemk1Z1GmwYvSRPAZaa2JuZCUVZh/cdl7Eh3rbv1UTPK40kvMDkxu2hJmcpbnuJSbyzh+3MrvHOubPQg87K49ioHYviE7WrO0mfn8gltSxs4DDc45jTCes1NME44Ouj8u2VV307lgvJ2U7yBDelBcOIJVC5BseV3Wp9xBkyis1+wBaOsix4E8Asb2SD7jBQsLU2zQL9NltRavD4FL+HnBHEOCOHaKRwpCLHbVL/7D+g4KsaiOgANWqc+ei9otOc3t9er/A3tsGmLlNHFWskBrZJhi6rRWAnGCQ==
+  global:
+    #- FOO=FUBU
+    - FO1=BUBU
+    - BOO=GUBU
 
-# Create directories for test and coverage reports
-before_script:
-  - mkdir -p shippable/testresults
-  - mkdir -p shippable/codecoverage
-  - echo $key1 and $key2 and $key3
-  
-before_install:
-  - node --version
-  - npm install -g grunt-cli
+ 
+build:
+  # pre_ci:
+   # - docker build --rm -t=shippabledocker/ .
+
+  pre_ci_boot:
+    image_name: drydock/u12nodall
+    image_tag:  prod
+    pull: true
+    env: FOO=BAR
+    options: '--privileged=true --net=bridge -e FOO=true -e BOO=false'
+
+  ci:
+    - ps -eax
+    - ls -al
+    - echo $FOO
+    - echo $FO1
+    - echo $BOO
+ 
+  branches:
+    only:
+     - master
+
+#  post_ci:
+ #   - docker build --rm -t=shippabledocker/vidya_sample_node2 . 
+  #  - docker push shippabledocker/vidya_sample_node2
+  smoke_test:
+    - sudo ls /
+
+deploy:
+  pre_build:
+    - ls
+    - ls -al
 
 
-
-archive: true
-
-# Running the tests with grunt
-script:
-  - grunt
-
-# Tell istanbul to generate a coverage report
-after_script:
-  - ./node_modules/.bin/istanbul cover grunt -- -u tdd
-  - ./node_modules/.bin/istanbul report cobertura --dir  shippable/codecoverage/
